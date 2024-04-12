@@ -6,21 +6,23 @@ import generateTokenAndSetCookie from "../utils/generateToken.js";
 export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
+    // console.log(req.body);
     const user = await User.findOne({ username });
+    // console.log(user);
     const isPasswordCorrect = await bcrypt.compare(
       password,
       user?.password || ""
     );
+
     if (!user || !isPasswordCorrect) {
       return res
-        .status(400)
+        .status(401)
         .json({ error: "Enter valid credentials", redirect: false });
     }
 
     generateTokenAndSetCookie(user._id, res);
     res.status(200).json({
       _id: user._id,
-      email: user.email,
       fullName: user.fullName,
       username: user.username,
       profilePic: user.profilePic,
@@ -36,8 +38,7 @@ export const login = async (req, res) => {
 // Signup -->
 export const signup = async (req, res) => {
   try {
-    const { fullName, username, email, password, confirmPassword, gender } =
-      req.body;
+    const { fullName, username, password, confirmPassword, gender } = req.body;
     if (password != confirmPassword) {
       return res
         .status(400)
@@ -47,13 +48,6 @@ export const signup = async (req, res) => {
     if (user) {
       return res.status(400).json({
         error: "User already exists with same username",
-        redirect: false,
-      });
-    }
-    const email_id = await User.findOne({ email });
-    if (email_id) {
-      return res.status(400).json({
-        error: "User already exists with same email-id",
         redirect: false,
       });
     }
@@ -70,7 +64,6 @@ export const signup = async (req, res) => {
       fullName,
       username,
       password: hashedPassword,
-      email,
       gender,
       profilePic: gender === "male" ? boyProfilePic : girlProfilePic,
     });
@@ -84,7 +77,6 @@ export const signup = async (req, res) => {
       await newUser.save();
       res.status(201).json({
         _id: newUser._id,
-        email: newUser.email,
         fullName: newUser.fullName,
         username: newUser.username,
         profilePic: newUser.profilePic,
