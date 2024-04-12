@@ -4,37 +4,46 @@ import { Toaster } from "react-hot-toast";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import Home from "./pages/Home.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { loginRedux, logoutRedux } from "./redux/userSlice.jsx";
 
 function App() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
   const [token, setToken] = useState(() =>
-    window.localStorage.getItem("token")
+    JSON.parse(window.localStorage.getItem("token"))
   );
 
   useEffect(() => {
-    const updateToken = () => {
-      setToken(window.localStorage.getItem("token"));
-    };
-
-    // Listen for custom event to update token
-    window.addEventListener("tokenUpdated", updateToken);
-
-    // Cleanup function to remove event listener
-    return () => {
-      window.removeEventListener("tokenUpdated", updateToken);
-    };
+    const tokenFromStorage = JSON.parse(window.localStorage.getItem("token"));
+    setToken(tokenFromStorage);
   }, []);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(loginRedux(token));
+    } else {
+      dispatch(logoutRedux());
+    }
+  }, [dispatch, token]);
+
+  // console.log(token);
+  // console.log(user);
 
   return (
     <div className="bg-white p-4 h-screen flex items-center justify-center bg-[url('/bg.png')]">
       <Routes>
-        <Route path="/" element={token ? <Home /> : <Navigate to="/login" />} />
+        <Route
+          path="/"
+          element={user._id ? <Home /> : <Navigate to="/login" />}
+        />
         <Route
           path="/login"
-          element={token ? <Navigate to="/" /> : <Login />}
+          element={user._id ? <Navigate to="/" /> : <Login />}
         />
         <Route
           path="/signup"
-          element={token ? <Navigate to="/" /> : <Signup />}
+          element={user._id ? <Navigate to="/" /> : <Signup />}
         />
       </Routes>
       <Toaster />

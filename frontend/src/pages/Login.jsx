@@ -40,8 +40,9 @@ const Login = () => {
 
         if (responseData.redirect) {
           toast.success("Login is successful");
+          // console.log(responseData);
           dispatch(loginRedux(responseData));
-          localStorage.setItem("token", responseData.redirect);
+          localStorage.setItem("token", JSON.stringify(responseData));
 
           // Dispatch custom event to notify token update
           window.dispatchEvent(new Event("tokenUpdated"));

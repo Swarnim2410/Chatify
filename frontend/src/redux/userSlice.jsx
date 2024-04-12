@@ -15,10 +15,10 @@ export const userSlice = createSlice({
       //action.payload contains data coming from the server
       
       //ab hame initialState me data set karna hai jo state.{property} se hi set hota hai..
-      state._id = action.payload._id;
-      state.username = action.payload.username;
-      state.profilePic = action.payload.profilePic;
-      state.fullName = action.payload.fullName;
+      state._id = action.payload?._id;
+      state.username = action.payload?.username;
+      state.profilePic = action.payload?.profilePic;
+      state.fullName = action.payload?.fullName;
     },
     logoutRedux: (state, action) => {
       state._id = "";

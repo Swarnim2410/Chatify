@@ -19,8 +19,9 @@ export const login = async (req, res) => {
         .status(401)
         .json({ error: "Enter valid credentials", redirect: false });
     }
-
+    // console.log(user);
     generateTokenAndSetCookie(user._id, res);
+    // console.log(req.cookies.jwt);
     res.status(200).json({
       _id: user._id,
       fullName: user.fullName,
@@ -74,6 +75,7 @@ export const signup = async (req, res) => {
       //generate JWT token -->
 
       generateTokenAndSetCookie(newUser._id, res);
+      // console.log(req.cookies.jwt);
       await newUser.save();
       res.status(201).json({
         _id: newUser._id,
