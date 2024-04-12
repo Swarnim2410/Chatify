@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { BiSolidShow } from "react-icons/bi";
 import { BiSolidHide } from "react-icons/bi";
+import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 const Signup = () => {
   const [data, setData] = useState({
     fullName: "",
@@ -11,6 +14,7 @@ const Signup = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -42,8 +46,8 @@ const Signup = () => {
         // console.log(responseData);
 
         if (responseData.redirect) {
-          console.log("Registration is successful");
-          console.log(responseData);
+          toast.success("Registration is successful");
+          navigate("/login");
           setData({
             fullName: "",
             username: "",
@@ -52,20 +56,20 @@ const Signup = () => {
             gender: "",
           });
         } else {
-          console.log(responseData.error);
+          toast.error(responseData.error);
         }
       } catch (error) {
-        console.error("Error:", error);
+        toast.error("Error:", error);
       }
     } else {
-      console.log("Enter all details");
+      toast.error("Enter all details");
     }
   };
 
   // console.log(data);
 
   return (
-    <div className="relative mx-auto w-full max-w-md bg-black px-6 pt-10 pb-8 shadow-xl sm:rounded-xl sm:px-10 border rounded-2xl mt-2 mb-2">
+    <div className="relative mx-auto w-full max-w-md bg-black px-6 pt-10 pb-8 shadow-xl sm:rounded-xl sm:px-10 border rounded-2xl mt-2 mb-2 opacity-85">
       <div className="w-full">
         <div className="text-center">
           <h1 className="text-3xl font-semibold text-white">Sign Up</h1>
@@ -177,12 +181,12 @@ const Signup = () => {
             </div>
             <p className="text-center text-sm text-white">
               Already have an account?
-              <a
-                href="#!"
+              <Link
+                to="/login"
                 className="font-semibold hover:underline focus:text-gray-800 focus:outline-none text-blue-700 pl-1"
               >
                 Sign In
-              </a>
+              </Link>
               .
             </p>
           </form>

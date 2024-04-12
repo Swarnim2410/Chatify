@@ -1,10 +1,18 @@
-import React from "react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginRedux } from "../redux/userSlice";
+import toast from "react-hot-toast";
+
 const Login = () => {
   const [data, setData] = useState({
     username: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -29,25 +37,29 @@ const Login = () => {
         );
 
         const responseData = await response.json();
-        // console.log(responseData);
 
         if (responseData.redirect) {
-          console.log("Login is successfull");
+          toast.success("Login is successful");
+          dispatch(loginRedux(responseData));
+          localStorage.setItem("token", responseData.redirect);
+
+          // Dispatch custom event to notify token update
+          window.dispatchEvent(new Event("tokenUpdated"));
+
+          navigate("/");
         } else {
-          console.log("Login failed");
+          toast.error("Invalid details");
         }
       } catch (error) {
-        console.error("Error:", error);
+        toast.error("Error: " + error.message);
       }
     } else {
-      console.log("Enter all details");
+      toast.error("Enter all details");
     }
   };
 
-  // console.log(data);
-
   return (
-    <div className="relative mx-auto w-full max-w-md bg-black px-6 pt-10 pb-8 shadow-xl sm:rounded-xl sm:px-10">
+    <div className="relative mx-auto w-full max-w-md bg-black px-6 pt-10 pb-8 shadow-xl sm:rounded-xl sm:px-10 opacity-85">
       <div className="w-full">
         <div className="text-center">
           <h1 className="text-3xl font-semibold text-white">Sign in</h1>
@@ -100,14 +112,14 @@ const Login = () => {
                 Sign in
               </button>
             </div>
-            <p className="text-center text-sm text-whie">
+            <p className="text-center text-sm text-white">
               Don't have an account yet?
-              <a
-                href="#!"
+              <Link
+                to="/signup"
                 className="font-semibold  hover:underline focus:text-gray-800 focus:outline-none text-blue-700 pl-1"
               >
                 Sign up
-              </a>
+              </Link>
               .
             </p>
           </form>
