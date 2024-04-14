@@ -1,25 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Messages from "./Messages";
 import MessageInput from "./MessageInput";
 import { TiMessages } from "react-icons/ti";
+import { useSelector } from "react-redux";
 
-// header --> Messages --> MessageInput
 const MessageContainer = () => {
+  const selectedOne = useSelector((state) => state.select);
+  const user = "User"
+  // console.log(selectedOne);
 
-    const noChatSelected = true
   return (
     <div className="md:min-w-[450px] flex flex-col">
-      {noChatSelected ? (
+      {!selectedOne.fullName ? (
         <NoChatSelected />
       ) : (
         <>
-          {/*Header*/}
           <div className="bg-slate-500 px-4 py-2 mb-2">
-            <span className="label-text">To:</span>
-            {""}
-            <span className="text-gray-900 font-bold">Swarnim</span>
+            <span className="label-text">To : </span>
+            <span className="text-gray-900 font-bold">{selectedOne.fullName ? selectedOne.fullName : user}</span>
           </div>
-
           <Messages />
           <MessageInput />
         </>

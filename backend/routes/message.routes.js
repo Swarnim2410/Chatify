@@ -5,5 +5,5 @@ import protectRoute from '../middleware/protectRoute.js'
 
 //protect route is used to get sender id who is currently logged in through jwt token verification
 router.post("/send/:id",protectRoute, sendMessage)
-router.get("/:id", protectRoute, getMessages);
+router.post("/:id", protectRoute, getMessages);
 export default router

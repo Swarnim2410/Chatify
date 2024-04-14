@@ -6,28 +6,29 @@ const initialState = {
   _id: "",
 };
 
-export const userSlice = createSlice({
-  name: "user",
+export const selectedConversation = createSlice({
+  name: "select",
   initialState,
   reducers: {
-    loginRedux: (state, action) => {
+    selectedRedux: (state, action) => {
       // console.log(action.payload);
       //action.payload contains data coming from the server
 
       //ab hame initialState me data set karna hai jo state.{property} se hi set hota hai..
-      state._id = action.payload?._id;
+      //   console.log(action.payload);
       state.username = action.payload?.username;
-      state.profilePic = action.payload?.profilePic;
       state.fullName = action.payload?.fullName;
+      state.profilePic = action.payload?.profilePic;
+      state._id = action.payload?._id;
     },
-    logoutRedux: (state, action) => {
-      state._id = "";
+    unselectedRedux: (state, action) => {
       state.username = "";
-      state.profilePic = "";
       state.fullName = "";
+      state.profilePic = "";
+      state._id = "";
     },
   },
 });
 
-export const { loginRedux, logoutRedux } = userSlice.actions;
-export default userSlice.reducer;
+export const { selectedRedux, unselectedRedux } = selectedConversation.actions;
+export default selectedConversation.reducer;

@@ -20,8 +20,9 @@ export const login = async (req, res) => {
         .json({ error: "Enter valid credentials", redirect: false });
     }
     // console.log(user);
-    generateTokenAndSetCookie(user._id, res);
-    // console.log(req.cookies.jwt);
+    const jsontoken = generateTokenAndSetCookie(user._id, res);
+    req.cookies.jwt = jsontoken;
+    // console.log(jsontoken);
     res.status(200).json({
       _id: user._id,
       fullName: user.fullName,

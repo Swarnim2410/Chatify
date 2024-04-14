@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from "react";
 import SingleConversation from "./SingleConversation";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
 import { getRandomEmoji } from "../utils/emojis";
+import { useDispatch, useSelector } from "react-redux";
+import { selectedRedux } from "../redux/selectedConversation";
 const Conversations = () => {
   const [conversations, setConversations] = useState([]);
   const [loading, setLoading] = useState(false);
-  console.log(conversations);
+  const [id, setId] = useState(false);
+  const dispatch = useDispatch();
+
+  const newcolor = (id, conver) => {
+    // console.log(conver);
+    setId(id);
+    dispatch(selectedRedux(conver));
+  };
+  // console.log(conversations);
   const userData = useSelector((state) => state.user);
+  // const selected = useSelector((state) => state.select.selected);
+  // console.log(selected);
   useEffect(() => {
     const getConversations = async () => {
       setLoading(true);
@@ -38,14 +49,17 @@ const Conversations = () => {
   }, []);
   return (
     <div className="py-2 flex flex-col overflow-auto">
-      {conversations.map((conversation,idx) => {
-        return(
-        <SingleConversation
-          key={conversation._id}
-          conversation={conversation}
-          emoji={getRandomEmoji()}
-          lastIdx={idx === conversations.length - 1}
-        />)
+      {conversations.map((conversation, idx) => {
+        return (
+          <SingleConversation
+            key={conversation._id}
+            conversation={conversation}
+            emoji={getRandomEmoji()}
+            lastIdx={idx === conversations.length - 1}
+            onClick={() => newcolor(conversation._id, conversation)}
+            id={id}
+          />
+        );
       })}
       {loading ? (
         <span className="loading loading-spinner mx-auto"></span>
