@@ -16,7 +16,7 @@ export const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (userData) {
-      const socket = io("http://localhost:3000", {
+      const socket = io("https://chatify-x1xy.onrender.com", {
         query: {
           userId: userData._id,
         },
