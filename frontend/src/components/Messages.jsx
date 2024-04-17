@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import SingleMessage from "./SingleMessage";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -11,7 +11,8 @@ const Messages = () => {
 
   const userData = useSelector((state) => state.user);
   const selected = useSelector((state) => state.select);
-  // console.log(selected);
+  const trigger = useSelector((state) => state.trigger);
+  // console.log(trigger);
 
   useEffect(() => {
     const getMessages = async () => {
@@ -42,15 +43,24 @@ const Messages = () => {
     if (selected?._id) {
       getMessages();
     }
-  }, [selected?._id, setMessages]);
+  }, [selected?._id, trigger]);
 
-  console.log(messages);
+  // console.log(messages);
+  const lastMessageRef = useRef();
+  useEffect(() => {
+    setTimeout(() => {
+      lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 50);
+  }, [messages]);
+
   return (
     <div className="px-4 flex-1 overflow-auto">
       {!loading &&
         messages.length > 0 &&
         messages.map((message) => (
-          <SingleMessage key={message._id} message={message} />
+          <div key={message._id} ref={lastMessageRef}>
+            <SingleMessage message={message} />
+          </div>
         ))}
       {loading && [...Array(3)].map((_, idx) => <MessageSkeleton key={idx} />)}
       {!loading && messages && messages.length === 0 && (

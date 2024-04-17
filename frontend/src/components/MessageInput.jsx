@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { BsSend } from "react-icons/bs";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { triggerRedux } from "../redux/trigger";
 
 const MessageInput = () => {
   const selectedOne = useSelector((state) => state.select);
   const userData = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   // console.log(selectedOne);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [triggered, setTriggered] = useState(false);
   // const [trigger, setTrigger] = useState(false);
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -36,6 +39,8 @@ const MessageInput = () => {
         throw new Error(responseData.error);
       }
       setMessage("");
+      setTriggered(!triggered);
+      dispatch(triggerRedux(triggered));
     } catch (error) {
       toast.error("Error: " + error.message);
     } finally {
@@ -49,7 +54,7 @@ const MessageInput = () => {
       <div className="w-full relative">
         <input
           type="text"
-          className="border text-sm rounded-lg block w-full p-2.5  bg-gray-700 border-gray-600 text-black"
+          className="border text-sm rounded-lg block w-full p-2.5  bg-gray-700 border-gray-600 text-white"
           placeholder="Send a message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}

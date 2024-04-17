@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { getRandomEmoji } from "../utils/emojis";
 import { useDispatch, useSelector } from "react-redux";
 import { selectedRedux } from "../redux/selectedConversation";
+import { getAllConversations } from "../redux/allConversations";
 const Conversations = () => {
   const [conversations, setConversations] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -39,6 +40,8 @@ const Conversations = () => {
           throw new Error(responseData.error);
         }
         setConversations(responseData);
+        // console.log(responseData);
+        dispatch(getAllConversations(responseData));
       } catch (error) {
         toast.error("Error: " + error.message);
       } finally {

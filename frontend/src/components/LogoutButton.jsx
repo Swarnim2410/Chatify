@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { unselectedRedux } from "../redux/selectedConversation";
+import { removeAllConversations } from "../redux/allConversations";
+import { untriggerRedux } from "../redux/trigger";
 
 const LogoutButton = () => {
   const dispatch = useDispatch();
@@ -28,6 +30,8 @@ const LogoutButton = () => {
         toast.success("Logout successfully");
         dispatch(logoutRedux());
         dispatch(unselectedRedux());
+        dispatch(removeAllConversations());
+        dispatch(untriggerRedux());
         localStorage.removeItem("token");
 
         // Dispatch custom event to notify token update
