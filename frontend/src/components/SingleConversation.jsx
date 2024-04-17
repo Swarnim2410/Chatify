@@ -1,11 +1,8 @@
 import React from "react";
-const SingleConversation = ({
-  conversation,
-  lastIdx,
-  emoji,
-  onClick,
-  id,
-}) => {
+import { useSocketContext } from "../context/SocketContext";
+const SingleConversation = ({ conversation, lastIdx, emoji, onClick, id }) => {
+  const { onlineUsers } = useSocketContext();
+  const isOnline = onlineUsers.includes(conversation._id);
   return (
     <>
       <div
@@ -14,7 +11,7 @@ const SingleConversation = ({
         }`}
         onClick={onClick}
       >
-        <div className="avatar online">
+        <div className={`avatar ${isOnline ? "online" : ""}`}>
           <div className="w-12 rounded-full">
             <img src={conversation.profilePic} alt="user avatar" />
           </div>

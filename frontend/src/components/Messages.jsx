@@ -4,10 +4,14 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import MessageSkeleton from "./MessageSkeleton";
+import useListenMessages from "../hooks/useListenMessages";
+import useConversation from "../zustand/useConversation";
 
 const Messages = () => {
   const [loading, setLoading] = useState(false);
-  const [messages, setMessages] = useState("");
+  // const [msgs, setMsgs] = useState("");
+  const { messages, setMessages } = useConversation();
+  useListenMessages();
 
   const userData = useSelector((state) => state.user);
   const selected = useSelector((state) => state.select);
@@ -30,6 +34,7 @@ const Messages = () => {
         );
 
         const responseData = await response.json();
+        console.log(responseData);
         if (responseData.error) {
           throw new Error(responseData.error);
         }
@@ -43,7 +48,7 @@ const Messages = () => {
     if (selected?._id) {
       getMessages();
     }
-  }, [selected?._id, trigger]);
+  }, [selected?._id]);
 
   // console.log(messages);
   const lastMessageRef = useRef();

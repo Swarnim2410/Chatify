@@ -3,6 +3,7 @@ import { BsSend } from "react-icons/bs";
 import toast from "react-hot-toast";
 import { useSelector, useDispatch } from "react-redux";
 import { triggerRedux } from "../redux/trigger";
+import useConversation from "../zustand/useConversation";
 
 const MessageInput = () => {
   const selectedOne = useSelector((state) => state.select);
@@ -12,6 +13,8 @@ const MessageInput = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [triggered, setTriggered] = useState(false);
+
+  const { messages, setMessages } = useConversation();
   // const [trigger, setTrigger] = useState(false);
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -41,6 +44,7 @@ const MessageInput = () => {
       setMessage("");
       setTriggered(!triggered);
       dispatch(triggerRedux(triggered));
+      setMessages([...messages, responseData]);
     } catch (error) {
       toast.error("Error: " + error.message);
     } finally {
