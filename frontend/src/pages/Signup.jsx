@@ -32,7 +32,7 @@ const Signup = () => {
     if (username && password && fullName && confirmPassword && gender) {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_APP_SERVER_DOMAIN}/auth/signup`,
+          `/api/auth/signup`,
           {
             method: "POST",
             headers: {

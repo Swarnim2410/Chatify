@@ -15,7 +15,7 @@ const LogoutButton = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_APP_SERVER_DOMAIN}/auth/logout`,
+        `/api/auth/logout`,
         {
           method: "POST",
           headers: {

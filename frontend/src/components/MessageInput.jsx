@@ -24,7 +24,7 @@ const MessageInput = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_APP_SERVER_DOMAIN}/messages/send/${
+        `/api/messages/send/${
           selectedOne._id
         }`,
         {

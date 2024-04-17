@@ -23,7 +23,7 @@ const Messages = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_APP_SERVER_DOMAIN}/messages/${selected._id}`,
+          `/api/messages/${selected._id}`,
           {
             method: "POST",
             headers: {

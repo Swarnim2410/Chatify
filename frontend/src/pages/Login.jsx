@@ -26,7 +26,7 @@ const Login = () => {
     if (username && password) {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_APP_SERVER_DOMAIN}/auth/login`,
+          `/api/auth/login`,
           {
             method: "POST",
             headers: {

@@ -25,7 +25,7 @@ const Conversations = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_APP_SERVER_DOMAIN}/users`,
+          `/api/users`,
           {
             method: "POST",
             headers: {
