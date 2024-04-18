@@ -25,21 +25,18 @@ const Login = () => {
 
     if (username && password) {
       try {
-        const response = await fetch(
-          `/api/auth/login`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
+        const response = await fetch(`/api/auth/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
 
         const responseData = await response.json();
 
         if (responseData.redirect) {
-          toast.success("Login is successful");
+          toast.success("Login is succesfull");
           // console.log(responseData);
           dispatch(loginRedux(responseData));
           localStorage.setItem("token", JSON.stringify(responseData));
